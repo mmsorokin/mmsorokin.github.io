@@ -1,5 +1,3 @@
-const char MainPagesource[] PROGMEM = R"=====(
-
 <!DOCTYPE html>
   <html>
     <head>
@@ -537,4 +535,3 @@ $( "#form_emoncms" ).submit(function( event ) {
    </head>
   <body>BLABLABLABLABLALBLAb</body>
  </html>
-)=====;
