@@ -179,8 +179,8 @@ function refreshGraph(){
 				plot1=$.jqplot('chart1',data,{
 				title: "Cell Voltages",
 				axes:{xaxis:{label:'Cell module',renderer:$.jqplot.CategoryAxisRenderer, ticks: t }
-				,yaxis:{ label:'V7oltage7',syncTicks:true, min: 2.0, max: 4.3, numberTicks:23, tickOptions:{formatString:'%.2f'} }
-				,y2axis:{label:'Temperature',syncTicks:true,min:-25, max:100, numberTicks:23, tickOptions:{formatString:'%.2f'}}
+				,yaxis:{ label:'VoltTok',syncTicks:true, min: 2.0, max: 4.3, numberTicks:23, tickOptions:{formatString:'%.2f'} }
+				,y2axis:{label:'TtUre',syncTicks:true,min:-25, max:100, numberTicks:23, tickOptions:{formatString:'%.2f'}}
 				}//end axes
 				,
 				 highlighter: { show: false, showMarker:false, tooltipAxes: 'xy', yvalues: 1}
@@ -190,14 +190,14 @@ function refreshGraph(){
 						showMarker:false, highlightMouseOver: false,
 						rendererOptions:{ barDirection: 'vertical', barMargin:12},					
 						yaxis : 'yaxis',
-						label : 'V7o7l7tage'						
+						label : 'Votage'						
 						,pointLabels:{show:false,formatString:'%.2f'}
 					}, {
 						//Temperature
 						pointLabels:{show:false,formatString:'%.2f'},
 						showMarker:false, highlightMouseOver: false,
 						yaxis : 'y2axis',
-						label : 'Temperature'
+						label : 'TempturA'
 					}
 					, {
 						//Max voltage
