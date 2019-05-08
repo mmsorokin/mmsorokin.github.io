@@ -190,14 +190,14 @@ function refreshGraph(){
 						showMarker:false, highlightMouseOver: false,
 						rendererOptions:{ barDirection: 'vertical', barMargin:12},					
 						yaxis : 'yaxis',
-						label : 'Votage'						
+						label : 'Vota1ge'						
 						,pointLabels:{show:false,formatString:'%.2f'}
 					}, {
 						//Temperature
 						pointLabels:{show:false,formatString:'%.2f'},
 						showMarker:false, highlightMouseOver: false,
 						yaxis : 'y2axis',
-						label : 'TempturA'
+						label : 'Te2mpturA'
 					}
 					, {
 						//Max voltage
