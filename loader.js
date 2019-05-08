@@ -190,7 +190,7 @@ function refreshGraph(){
 						showMarker:false, highlightMouseOver: false,
 						rendererOptions:{ barDirection: 'vertical', barMargin:12},					
 						yaxis : 'yaxis',
-						label : 'Voltage'						
+						label : 'V7o7l7tage'						
 						,pointLabels:{show:false,formatString:'%.2f'}
 					}, {
 						//Temperature
