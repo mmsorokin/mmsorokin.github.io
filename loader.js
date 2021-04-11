@@ -358,7 +358,20 @@ script.onload = function(){
 	<div id="chart1"></div> \
 </div> \
   </div> \
+  <input type="checkbox" id="hmt" class="hidden-menu-ticker"> \
+<label class="btn-menu" for="hmt"> \
+  <span class="first"></span> \
+  <span class="second"></span> \
+  <span class="third"></span> \
+</label> \
 
+<ul class="hidden-menu"> \
+    <a href="#config" data-transition="pop" class="ui-btn ui-shadow ui-btn ui-btn-a">System Setup</a> \
+    <a href="#modules" data-transition="pop" class="ui-btn ui-shadow ui-btn ui-btn-a">Module Setup</a>  \
+    <a id="AboveAvgBalance" class="ui-btn ui-shadow ui-btn ui-btn-a">Average Balance</a> \
+    <a id="CancelAvgBalance" class="ui-btn ui-shadow ui-btn ui-btn-a">Cancel Average Balance</a> \
+    <a id="ResetESP" class="ui-btn ui-shadow ui-btn ui-btn-a">System Reset</a> \
+</ul> \
 
 	<div data-role="page" id="config" data-dom-cache="true"> \
 	<div data-role="header"><h1>Configuration</h1></div> \
