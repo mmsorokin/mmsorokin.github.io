@@ -365,7 +365,15 @@ script.onload = function(){
   <span class="third"></span> \
 </label> \
 
-	<div data-role="page" id="config" data-dom-cache="true"> \
+<ul class="hidden-menu"> \
+    <a href="#config" data-transition="pop" class="ui-btn ui-shadow ui-btn ui-btn-a">System Setup</a> \
+    <a href="#modules" data-transition="pop" class="ui-btn ui-shadow ui-btn ui-btn-a">Module Setup</a>  \
+    <a id="AboveAvgBalance" class="ui-btn ui-shadow ui-btn ui-btn-a">Average Balance</a> \
+    <a id="CancelAvgBalance" class="ui-btn ui-shadow ui-btn ui-btn-a">Cancel Average Balance</a> \
+    <a id="ResetESP" class="ui-btn ui-shadow ui-btn ui-btn-a">System Reset</a> \
+</ul> \
+
+<div data-role="page" id="config" data-dom-cache="true"> \
 	<div data-role="header"><h1>Configuration</h1></div> \
 	<div role="main" data-role="ui-content"> \
 	<h1>Configuration</h1> \
