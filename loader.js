@@ -39,14 +39,14 @@ function refreshConfig() {
 	  url: getsettingsurl,
 	  dataType: "json",
 	  success: function(data) {	
-
+		
 		var myswitch = $( "#emoncms_enabled" );
 		myswitch[0].selectedIndex = data.emoncms_enabled ? 1:0;
 		myswitch.slider( "refresh" );
 		
-		var myswitch_influxdb = $("#influxdb_enabled");
+		var myswitch_influxdb = $( "#influxdb_enabled" );
 		myswitch_influxdb[0].selectedIndex = data.influxdb_enabled ? 1:0;
-		myswitch_influxdb.slider("refresh");
+		myswitch_influxdb.slider( "refresh" );
 		
 		$("#emoncms_apikey").val( data.emoncms_apikey );
 		$("#emoncms_host").val( data.emoncms_host );
@@ -162,12 +162,23 @@ function refreshGraph(){
       dataType: "json",
       success: function(data) {		 
         if (plot1) plot1.destroy();
+
 		var t=[];
+
+$.jqplot.postDrawHooks.push(function() {
+    $(".jqplot-overlayCanvas-canvas").css('z-index', '0'); //send overlay canvas to back  
+    $(".jqplot-series-canvas").css('z-index', '1'); //send series canvas to front         
+    $(".jqplot-highlighter-tooltip").css('z-index', '2'); //make sure the tooltip is over the series
+    $(".jqplot-event-canvas").css('z-index', '5'); //must be on the very top since it is responsible for event catching and propagation
+});
+
 		for (var i = 0; i < data[0].length; i++) {
 			data[0][i]= data[0][i] / 1000.0;
 			data[2][i]= data[2][i] / 1000.0;
 			data[3][i]= data[3][i] / 1000.0;		
-			t.push(data[0][i]+"V ["+ data[4][i]+"]");
+			//t.push(data[0][i]+"V ["+ data[4][i]+"]");
+      t.push(data[0][i]+"V");
+
 		}
 		
 		if (data[0].length==0) {
@@ -175,10 +186,87 @@ function refreshGraph(){
 		} else {
 			$("#nodata").hide();
 				plot1=$.jqplot('chart1',data,{
-				title: "Cell Voltages",
-				axes:{xaxis:{label:'Cell module',renderer:$.jqplot.CategoryAxisRenderer, ticks: t }
-				,yaxis:{ label:'Voltage',syncTicks:true, min: 2.0, max: 4.3, numberTicks:23, tickOptions:{formatString:'%.2f'} }
-				,y2axis:{label:'Temperature',syncTicks:true,min:-25, max:100, numberTicks:23, tickOptions:{formatString:'%.2f'}}
+				//title: "Cell Voltages",
+
+canvasOverlay: {
+        show: true,
+        objects: [
+        
+          { rectangle: { ymax: 2.1, ymin: 2.0, color: "rgba(140, 140, 140, 0.2)" } }
+         ,{ rectangle: { ymax: 2.3, ymin: 2.2, color: "rgba(140, 140, 140, 0.2)" } }                    
+         ,{ rectangle: { ymax: 2.5, ymin: 2.4, color: "rgba(140, 140, 140, 0.2)" } }                    
+         ,{ rectangle: { ymax: 2.7, ymin: 2.6, color: "rgba(140, 140, 140, 0.2)" } }                   
+         ,{ rectangle: { ymax: 2.9, ymin: 2.8, color: "rgba(140, 140, 140, 0.2)" } }                    
+         ,{ rectangle: { ymax: 3.1, ymin: 3.0, color: "rgba(140, 140, 140, 0.2)" } }                    
+         ,{ rectangle: { ymax: 3.3, ymin: 3.2, color: "rgba(140, 140, 140, 0.2)" } }                    
+         ,{ rectangle: { ymax: 3.5, ymin: 3.4, color: "rgba(140, 140, 140, 0.2)" } }                    
+         ,{ rectangle: { ymax: 3.7, ymin: 3.6, color: "rgba(140, 140, 140, 0.2)" } }                    
+         ,{ rectangle: { ymax: 3.9, ymin: 3.8, color: "rgba(140, 140, 140, 0.2)" } }                    
+
+        ,{dashedHorizontalLine: {
+                    y: 3.65,
+                    lineWidth: 2,
+                    xOffset: '0',
+                    color: 'rgba(211, 84, 84, 0.9)',
+                    shadow: false
+                }}
+        ,{dashedHorizontalLine: {
+                    y: 2.8,
+                    lineWidth: 2,
+                    xOffset: '0',
+                    color: 'rgba(234, 200, 50, 0.9)',
+                    shadow: false
+                }}          
+        ]
+      },
+       
+//				seriesColors:['rgba(78, 135, 240, 0.9)'], //Any Good colors "#3F7492", "#4F9AB8"
+        seriesColors:['rgba(30, 144, 255, 0.9)'], //Any Good colors "#3F7492", "#4F9AB8"
+				grid: {
+					//drawGridLines: true,        // wether to draw lines across the grid or not.
+        				gridLineColor: '#666666',   // CSS color spec of the grid lines.
+					gridLineWidth: 2,
+        				background: '#393939',      // CSS color spec for background color of grid.
+					//background: 'white',
+					//rendererOptions: {
+					//	plotBands: {
+					//		show: true
+					//	}
+					//}
+					//borderColor: '#828080',     // CSS color spec for border around grid.
+        				//borderWidth: 5.0,           // pixel width of border around grid.
+        				//shadow: false               // draw a shadow for grid.
+        				//shadowAngle: 45,            // angle of the shadow.  Clockwise from x axis.
+        				//shadowOffset: 1.5,          // offset from the line of the shadow.
+        				//shadowWidth: 5,             // width of the stroke for the shadow.
+        				//shadowDepth: 5
+				}, 
+				axes:{
+					xaxis:{
+						//label:'Cell module',
+						renderer:$.jqplot.CategoryAxisRenderer,
+						ticks: t
+					},
+					yaxis:{
+						label:'Cell Voltage',
+						labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+						syncTicks:false,
+						min: 2,
+						max: 4,
+						//numberTicks: 24,
+            tickInterval: 0.1,
+						tickOptions:{formatString:'%.2f'}
+					}
+					,
+					y2axis:{
+						label:'Temperature',
+						labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+						syncTicks:true,
+						min:-10,
+						max:70,
+						numberTicks:21,
+						tickOptions:{formatString:'%.1f'}
+					}
 				}//end axes
 				,
 				 highlighter: { show: false, showMarker:false, tooltipAxes: 'xy', yvalues: 1}
@@ -188,42 +276,51 @@ function refreshGraph(){
 						showMarker:false, highlightMouseOver: false,
 						rendererOptions:{ barDirection: 'vertical', barMargin:12},					
 						yaxis : 'yaxis',
-						label : 'Voltage'						
-						,pointLabels:{show:false,formatString:'%.2f'}
-					}, {
+						label : 'Cell Voltage'						
+					//	,pointLabels:{show:false,formatString:'%.2f'}
+					}
+					, {
 						//Temperature
+            showLine: false,
 						pointLabels:{show:false,formatString:'%.2f'},
 						showMarker:false, highlightMouseOver: false,
 						yaxis : 'y2axis',
 						label : 'Temperature'
 					}
 					, {
-						//Max voltage
-						lineWidth: 3, color: 'green',
+						//Min voltage
+           showLine: false,
+//						lineWidth: 8, color: 'red',
 		markerRenderer: $.jqplot.MarkerRenderer,
 		markerOptions: {
-			show: true, style: 'circle', color: 'green',lineWidth: 10,size: 2,shadow:true,	
-			shadowAngle: 0,	shadowOffset: 0, shadowDepth: 1,shadowAlpha: 0.07}	
-			,linePattern: 'dashed', yaxis : 'yaxis',label : 'VoltMax'
-			,pointLabels:{show:true,formatString:'%.2f'}
+			show: true,			style: 'filledCircle',			color: 'yellow',			lineWidth: 1,			size: 8,			shadow: true,
+			shadowAngle: 0,			shadowOffset: 0,			shadowDepth: 1,			shadowAlpha: 0.9		}	
+//			,linePattern: 'dashed', yaxis : 'yaxis',label : 'VoltMax'
+			,pointLabels:{show:false,formatString:'%.2f'}
 			}, 
-		{ //Min voltage
-		lineWidth: 3,
-		color: 'orange',
+		{ //Max voltage
+               showLine: false,
+//		lineWidth: 9,
+//		color: 'green',
 		markerRenderer: $.jqplot.MarkerRenderer,
-		markerOptions: {show: true,style: 'circle',color: 'orange',lineWidth: 10,size: 2,
-		shadow: true,shadowAngle: 0,shadowOffset: 0,shadowDepth: 1,shadowAlpha: 0.07}	
-			,linePattern: 'dashed', yaxis : 'yaxis',label : 'VoltMin'
-			,pointLabels:{show:true,formatString:'%.2f'}
+		markerOptions: {			
+		  show: true,			style: 'filledCircle',			color: 'red',			lineWidth: 1,			size: 8,
+			shadow: true,			shadowAngle: 0,			shadowOffset: 0,			shadowDepth: 1,			shadowAlpha: 0.07		}	
+//			,
+//			linePattern: 'dashed', yaxis : 'yaxis',label : 'VoltMin'
+			,pointLabels:{show:false,formatString:'%.2f'}
 					}
 					, {//difference from average
-					show:false }					
+     			showLine:false,
+     			showMarker:false,
+     			pointLabels:{show:false}}					
 					]	
 			  });
-		  
-	$('#chart1').height($(window).height()*0.85);
-
-	$(window).bind('resize', function(event, ui) {
+			  
+			  
+	$('#chart1').height($(window).height()*0.9);
+	
+	 $(window).bind('resize', function(event, ui) {
         $('#chart1').height($(window).height()*0.85);
         $('#chart1').width($(window).width()*0.90);
         plot1.replot({resetAxes:true});
@@ -237,7 +334,7 @@ function refreshGraph(){
   }
   
 /* Dynamically load the CSS and JS files from the web */
-var css = ["https://stuartpittaway.github.io/diyBMS/main.css", 
+var css = ["https://stuartpittaway.github.io/diyBMS/main.css111", 
 	"https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css",
 	"https://fonts.googleapis.com/css?family=Open+Sans:300,400,700",
 	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/jquery.jqplot.min.css"];
@@ -256,12 +353,24 @@ script.onload = function(){
 	
 
 	$("body").append('<div data-role="page" data-url="/" tabindex="0" class="ui-page ui-page-theme-a ui-page-active" id="main"> \
-	<div data-role="header"><h1>DIY BMS Management Console</h1></div> \
+	<div data-role="header"><h1>Lithium Monitor</h1></div> \
 	<div role="main" data-role="ui-content"><div id="nodata">There is no data available, please configure modules.</div> \
 	<div id="chart1"></div> \
-	<div id="buttons"><a href="#config" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline">Configure</a> <a href="#modules" data-transition="pop" class="ui-btn ui-corner-all ui-shadow ui-btn-inline">Modules</a>  \
-	<a id="AboveAvgBalance" class="ui-btn ui-corner-all ui-shadow ui-btn-inline">Above Avg Balance</a>  <a id="CancelAvgBalance" class="ui-btn ui-corner-all ui-shadow ui-btn-inline">Cancel Avg Balance</a> <a id="ResetESP" class="ui-btn ui-corner-all ui-shadow ui-btn-inline">Reset Controller</a> <a id="github" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" href="https://github.com/chickey/diyBMS">GitHub</a></div></div> \
-	</div> \
+</div> \
+  </div> \
+  <input type="checkbox" id="hmt" class="hidden-menu-ticker"> \
+<label class="btn-menu" for="hmt"> \
+  <span class="first"></span> \
+  <span class="second"></span> \
+  <span class="third"></span> \
+</label> \
+<ul class="hidden-menu"> \
+    <a href="#config" data-transition="pop" class="ui-btn ui-shadow ui-btn ui-btn-a">System Setup</a> \
+    <a href="#modules" data-transition="pop" class="ui-btn ui-shadow ui-btn ui-btn-a">Module Setup</a>  \
+    <a id="AboveAvgBalance" class="ui-btn ui-shadow ui-btn ui-btn-a">Average Balance</a> \
+    <a id="CancelAvgBalance" class="ui-btn ui-shadow ui-btn ui-btn-a">Cancel Average Balance</a> \
+    <a id="ResetESP" class="ui-btn ui-shadow ui-btn ui-btn-a">System Reset</a> \
+</ul> \
 	<div data-role="page" id="config" data-dom-cache="true"> \
 	<div data-role="header"><h1>Configuration</h1></div> \
 	<div role="main" data-role="ui-content"> \
@@ -510,12 +619,15 @@ $( "#form_emoncms" ).submit(function( event ) {
 	
 	//Load the other libraries
 	var js = ["https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js",
-	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/jquery.jqplot.min.js", 
-	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.barRenderer.min.js",
+	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/jquery.jqplot.min.js",
+  "https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.canvasOverlay.js",
+ 	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.barRenderer.min.js",
 	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.highlighter.min.js",
 	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.mobile.min.js",
 	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.cursor.min.js",
 	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.pointLabels.min.js",
+	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.canvasTextRenderer.js",
+	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.canvasAxisLabelRenderer.js",
 	"https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.9/plugins/jqplot.categoryAxisRenderer.min.js"]
 	js.forEach(addJavascript);
 }
