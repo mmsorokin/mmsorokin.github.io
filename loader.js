@@ -353,7 +353,7 @@ script.onload = function(){
 	
 
 	$("body").append('<div data-role="page" data-url="/" tabindex="0" class="ui-page ui-page-theme-a ui-page-active" id="main"> \
-	<div data-role="header"><h1>Lithium Monitor 1985</h1></div> \
+	<div data-role="header"><h1>Lithium Monitor march1985</h1></div> \
 	<div role="main" data-role="ui-content"><div id="nodata">There is no data available, please configure modules.</div> \
 	<div id="chart1"></div> \
 </div> \
