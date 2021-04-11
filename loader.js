@@ -364,7 +364,6 @@ script.onload = function(){
   <span class="second"></span> \
   <span class="third"></span> \
 </label> \
-
 <ul class="hidden-menu"> \
     <a href="#config" data-transition="pop" class="ui-btn ui-shadow ui-btn ui-btn-a">System Setup</a> \
     <a href="#modules" data-transition="pop" class="ui-btn ui-shadow ui-btn ui-btn-a">Module Setup</a>  \
@@ -372,7 +371,6 @@ script.onload = function(){
     <a id="CancelAvgBalance" class="ui-btn ui-shadow ui-btn ui-btn-a">Cancel Average Balance</a> \
     <a id="ResetESP" class="ui-btn ui-shadow ui-btn ui-btn-a">System Reset</a> \
 </ul> \
-
 	<div data-role="page" id="config" data-dom-cache="true"> \
 	<div data-role="header"><h1>Configuration</h1></div> \
 	<div role="main" data-role="ui-content"> \
